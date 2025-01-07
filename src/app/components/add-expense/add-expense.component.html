@@ -3,6 +3,20 @@
 </h2>
 
 <mat-dialog-content>
+    @if(isLoading){
+        <div class="d-flex flex-column align-items-center justify-content-center">
+
+            <div>
+                <mat-spinner [diameter]="70">
+                
+                </mat-spinner>
+            </div>
+            <div>
+                Adding Expense...
+            </div>
+        </div>
+    }
+    @else{
     <mat-stepper>
         <mat-step>
                 <div class="d-flex flex-column gap-2">
@@ -92,6 +106,7 @@
         </mat-step>
 
     </mat-stepper>
+}
 </mat-dialog-content>
 
 

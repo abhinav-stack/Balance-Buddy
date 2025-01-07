@@ -22,13 +22,14 @@ import {ChangeDetectionStrategy} from '@angular/core';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AddExpenseComponent } from '../add-expense/add-expense.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-home',
   imports: [RouterOutlet,RouterLink,MatIconModule,MatButtonModule,CommonModule,MatCardModule,
     MatFormFieldModule,MatInputModule,MatSelectModule,FormsModule,MatSidenavModule,MatSnackBarModule,
     ReactiveFormsModule,MatInputModule,FormsModule,MatAutocompleteModule,AsyncPipe,
-    MatChipsModule,MatDialogModule
+    MatChipsModule,MatDialogModule,MatProgressSpinnerModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -60,8 +61,10 @@ export class HomeComponent implements OnInit {
   });
   readonly announcer = inject(LiveAnnouncer);
   dialog = inject(MatDialog);
+  isLoading: boolean=false;
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
       if (isAuthenticated) {
         this.auth.user$.subscribe((user) => {
@@ -123,7 +126,7 @@ export class HomeComponent implements OnInit {
   handleUser(user: any) {
     // now first check if the user is already in the database then no need to save it in the db,
     // else save it in the db
-
+    this.isLoading = true;
     this.homeService.getUser(user.email).subscribe({
       next: (data) => {
         this.userDetails = data.balanceSheet;
@@ -154,6 +157,8 @@ export class HomeComponent implements OnInit {
   }
 
   addUser(event: any){
+
+    this.isLoading = true;
     
       console.log(event);
       let loggedInUser = this.user.email;
@@ -161,9 +166,12 @@ export class HomeComponent implements OnInit {
       const email = event.option.value.email;
       this.homeService.addAFriend(loggedInUser, email).subscribe({
         next: (data:any)=>{
+          this.snackbar.open('Friend Added Successfully','close');
+          this.handleUser(this.user);
           console.log(data);
         },
         error: (error:any)=>{
+          this.isLoading = false;
           console.log(error);
         }
       })
@@ -173,10 +181,12 @@ export class HomeComponent implements OnInit {
   getAllUsers(){
     this.homeService.getAllUsers().subscribe({
       next: (data:any)=>{
+        this.isLoading = false;
         this.allUsers = data;
       },
       error: (error:any)=>{
-
+        this.isLoading=false;
+        this.snackbar.open("Some Error Occured", 'close');
       }
     })
   }
@@ -221,8 +231,10 @@ export class HomeComponent implements OnInit {
 
 
   addExpense(){
+    console.log(this.user);
     const dialogRef = this.dialog.open(AddExpenseComponent, {
       data:{
+        loggedInUser: this.user,
         balance: this.userDetails.balanceData,
       },
       disableClose: true,

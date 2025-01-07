@@ -14,6 +14,8 @@ import { MatStepperModule } from '@angular/material/stepper'
 import {MatDividerModule } from '@angular/material/divider'
 import { HomeService } from '../services/home.service';
 import { splitType } from '../../dummy-data/friends-dummy-data';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 export interface IExpenseType{
   value:string
@@ -28,7 +30,7 @@ export interface IFriendType{
 @Component({
   selector: 'app-add-expense',
   imports: [MatDialogModule,MatButtonModule,MatStepperModule,FormsModule,ReactiveFormsModule,MatFormFieldModule
-    ,MatChipsModule,MatIconModule,MatAutocompleteModule,MatInputModule,MatSelectModule,MatDividerModule
+    ,MatChipsModule,MatIconModule,MatAutocompleteModule,MatInputModule,MatSelectModule,MatDividerModule,MatProgressSpinnerModule
   ],
   templateUrl: './add-expense.component.html',
   styleUrl: './add-expense.component.scss',
@@ -48,6 +50,7 @@ export class AddExpenseComponent implements OnInit {
       viewValue:"Manual"
     }
   ]
+   private snackbar = inject(MatSnackBar);
   private homeService = inject(HomeService);
   data = inject(MAT_DIALOG_DATA);
   private _formBuilder = inject(FormBuilder);
@@ -75,6 +78,7 @@ export class AddExpenseComponent implements OnInit {
   })
 
   friendsAmountControls: { [key: string]: any } = {};
+  isLoading: boolean=false;
 
   ngOnInit(): void {
     
@@ -196,22 +200,27 @@ export class AddExpenseComponent implements OnInit {
     }
 
     addExpense(){
-      // const reqBody = {
-      //   paidBy: 
-      //   description: this.firstFormGroup.get('description')?.value,
-      //   totalAmt: this.firstFormGroup.get('amount')?.value,
-      //   splitType: this.selectedValue,
-      //   contributors: this.friendList
-      // }
-    //   this.homeService.addExpense(reqBody).subscribe({
-    //     next: (res:any)=>{
-    //       console.log(res);
-    //     },
-    //     error: (err:any)=>{
-    //       console.log(err);
-    //     }
-    //   })
-    // }
+      this.isLoading = true;
+      const reqBody = {
+        paidBy: this.data.loggedInUser.email,
+        description: this.firstFormGroup.get('description')?.value,
+        totalAmt: this.firstFormGroup.get('amount')?.value,
+        splitType: this.selectedValue,
+        contributors: this.friendList
+      }
+      this.homeService.addExpense(reqBody).subscribe({
+        next: (res:any)=>{
+          this.isLoading = false;
+          this.snackbar.open("Expense Added Successfully",'close');
+          console.log(res);
+        },
+        error: (err:any)=>{
+          this.isLoading=false;
+          this.snackbar.open("Some error Occured while Adding Expense",'close');
+          console.log(err);
+        }
+      })
     }
+    
 
 }
