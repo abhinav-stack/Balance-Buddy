@@ -1,0 +1,107 @@
+<h2 mat-dialog-title>
+    Add An Expense
+</h2>
+
+<mat-dialog-content>
+    <mat-stepper>
+        <mat-step>
+                <div class="d-flex flex-column gap-2">
+                    
+                
+                    <form [formGroup]="firstFormGroup">
+                        <div>Select Friend</div>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-chip-grid #chipGrid aria-label="Friend Selection">
+                                @for (friend of friend(); track $index) {
+                                <mat-chip-row (removed)="remove(friend)">
+                                    {{friend.friendName}}
+                                    <button matChipRemove [attr.aria-label]="'remove ' + friend">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                                }
+                            </mat-chip-grid>
+                            <input placeholder="Add Friend..." #friendInput [(ngModel)]="currentFriend"
+                                [matChipInputFor]="chipGrid" [matAutocomplete]="auto" 
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" formControlName="friendList" />
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                @for (friend of filteredFriends(); track friend) {
+                                <mat-option [value]="friend">{{friend.friendName}}</mat-option>
+                                }
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <div>Enter Description</div>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input formControlName="description" matInput type="text" placeholder="Enter Description" />
+                        </mat-form-field>
+                        
+                        <div >Enter Transaction Amount</div>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput formControlName="amount" type="text" placeholder="Enter Transaction Amount" />
+                        </mat-form-field>
+
+                    </form>
+                <div>
+                    <button mat-button matStepperNext (click)="getDetails()">Next</button>
+                </div>
+                    
+                </div>
+
+
+
+
+
+                
+        </mat-step>
+
+        <mat-step>
+                <form [formGroup]="secondFormGroup" class="d-flex mt-3">
+                <div class="me-2">
+                    <mat-form-field appearance="outline" class="mt-2"> 
+                        <mat-label>Select Split Type</mat-label>
+                        <mat-select [(ngModel)]="selectedValue" (selectionChange)="setExpense()" formControlName="eventSelected">
+                            @for (expense of expenseType; track expense) {
+                            <mat-option [value]="expense.value">{{expense.viewValue}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div> 
+                <div class="vr">
+                </div>
+                <div class="d-flex align-items-center flex-column ms-2">
+
+                    @for(friend of friend(); track friend){
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-6">
+                                {{friend.friendName}}
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline">
+                                    <input [formControlName]="friend.friendName" matInput type="number" placeholder="Enter amount" (change)="onAmountChange($event,friend)">
+                                </mat-form-field>
+                                
+                            </div>
+                        </div>
+                    }
+                </div>
+                </form>
+            <div>
+                <button mat-button matStepperPrevious (click)="onBack()">Back</button>
+            </div>
+        </mat-step>
+
+    </mat-stepper>
+</mat-dialog-content>
+
+
+<mat-dialog-actions>
+    {{secondFormGroup.valid}}
+    {{firstFormGroup.valid}}
+    <button mat-button (click)="addExpense()" [disabled]="!(firstFormGroup.valid && secondFormGroup.valid)">
+        Add Expense
+    </button>
+    <button class="ms-auto" mat-button mat-dialog-close>
+        Close
+    </button>
+</mat-dialog-actions>
