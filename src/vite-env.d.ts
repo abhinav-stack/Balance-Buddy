@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
     VITE_DOMAIN: string;
-    VITE_CLIENTID: string;
+    VITE_CLIENTID: string;  
 }
 
 interface ImportMeta {
