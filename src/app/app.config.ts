@@ -12,10 +12,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     provideAuth0({
-      domain: environment.auth.domain,
-      clientId: environment.auth.clientId,
+      domain: environment.auth.domain|| "",
+      clientId: environment.auth.clientId|| "",
       authorizationParams: {
-        redirect_uri: 'http://localhost:4200',
+        redirect_uri: 'https://balance-buddy-alpha.vercel.app/',
       }
       })
   ]
