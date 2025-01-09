@@ -79,6 +79,7 @@ export class AddExpenseComponent implements OnInit {
 
   friendsAmountControls: { [key: string]: any } = {};
   isLoading: boolean=false;
+  exceedingAmount: boolean=false;
 
   ngOnInit(): void {
     
@@ -174,7 +175,7 @@ export class AddExpenseComponent implements OnInit {
       if(splitType == 'EQUAL'){
       const amount = Number(this.firstFormGroup.get('amount')?.value);
       if (amount !== null && amount !== undefined && !isNaN(amount)) {
-        const dividedAmount = amount / this.friend().length;
+        const dividedAmount = amount / (this.friend().length+1);
         this.friend().forEach((frnd) => {
           this.secondFormGroup.get(frnd.friendName)?.setValue(dividedAmount);
         });
@@ -190,13 +191,20 @@ export class AddExpenseComponent implements OnInit {
       console.log(friend);
       console.log(event?.target?.value);
 
-
+      let totalAmount = 0;
       this.friendList.forEach((item) => {
         if(item.email == friend.friendEmail){
           item.amount = event.target.value;
         }
+        totalAmount+=Number(item.amount);
       })
 
+      if(totalAmount <= Number(this.firstFormGroup.get('amount')?.value)){
+          this.exceedingAmount = false;
+      }else{
+        this.exceedingAmount = true;
+        this.snackbar.open('total surplus amount is exceeding the expense amount');
+      }
     }
 
     addExpense(){

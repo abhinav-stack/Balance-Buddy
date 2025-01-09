@@ -1,0 +1,35 @@
+ .calculator {
+    width: 250px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    /* Added background color */
+}
+
+input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 18px;
+    text-align: right;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    /* Ensures padding is included in width */
+}
+
+
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #eee;
+    /* Added button background color */
+}
+
+button.equal {
+    grid-column: span 2;
+}   

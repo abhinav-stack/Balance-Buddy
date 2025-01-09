@@ -23,13 +23,14 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AddExpenseComponent } from '../add-expense/add-expense.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CalculalorComponent } from '../calculalor/calculalor.component';
 
 @Component({
   selector: 'app-home',
   imports: [RouterOutlet,RouterLink,MatIconModule,MatButtonModule,CommonModule,MatCardModule,
     MatFormFieldModule,MatInputModule,MatSelectModule,FormsModule,MatSidenavModule,MatSnackBarModule,
     ReactiveFormsModule,MatInputModule,FormsModule,MatAutocompleteModule,AsyncPipe,
-    MatChipsModule,MatDialogModule,MatProgressSpinnerModule
+    MatChipsModule,MatDialogModule,MatProgressSpinnerModule,CalculalorComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -96,13 +97,13 @@ export class HomeComponent implements OnInit {
     const filteredFriends = loggedInUserFriends.filter((friend: any) =>
     friend.friendName.toLowerCase().includes(value.toLowerCase())
     );
-    console.log(filteredFriends);
+    console.log(filteredFriends); 
     const filteredGlobalUsers = this.allUsers.filter((user:any) =>
     user.name.toLowerCase().includes(value.toLowerCase())
     );
     console.log(filteredGlobalUsers);
     let result = filteredGlobalUsers.filter((globalUser:any) =>
-    !filteredFriends.some((friend:any) => friend.friendName === globalUser.name)
+    !filteredFriends.some((friend:any) => friend.friendEmail === globalUser.email)
     );
 
     console.log(result);

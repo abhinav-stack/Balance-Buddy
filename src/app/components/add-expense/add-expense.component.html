@@ -113,7 +113,7 @@
 <mat-dialog-actions>
     {{secondFormGroup.valid}}
     {{firstFormGroup.valid}}
-    <button mat-button (click)="addExpense()" [disabled]="!(firstFormGroup.valid && secondFormGroup.valid)">
+    <button mat-button (click)="addExpense()" [disabled]="!(firstFormGroup.valid && secondFormGroup.valid && (!exceedingAmount))">
         Add Expense
     </button>
     <button class="ms-auto" mat-button mat-dialog-close>

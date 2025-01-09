@@ -1,0 +1,24 @@
+<div class="calculator">
+    <input type="text" [(ngModel)]="displayValue" readonly>
+    <div class="row">
+        <button (click)="clear()" class="col-md-3">C</button>
+        <button (click)="backspace()" class="col-md-3">←</button>
+        <button (click)="appendToDisplay('/')" class="col-md-3">/</button>
+        <button (click)="appendToDisplay('*')" class="col-md-3">*</button><br>
+        <button (click)="appendToDisplay('-')" class="col-md-3">-</button>
+        <button (click)="appendToDisplay('+')" class="col-md-3">+</button>
+        <button class="" (click)="calculate()" class="col-md-6">=</button><br>
+        <button (click)="appendToDisplay('9')" class="col-md-3">9</button>
+        <button (click)="appendToDisplay('8')" class="col-md-3">8</button>
+        <button (click)="appendToDisplay('7')" class="col-md-3">7</button>
+        <button (click)="appendToDisplay('6')" class="col-md-3">6</button><br>
+        <button (click)="appendToDisplay('5')" class="col-md-3">5</button>
+        <button (click)="appendToDisplay('4')" class="col-md-3">4</button>
+        <button (click)="appendToDisplay('3')" class="col-md-3">3</button>
+        <button (click)="appendToDisplay('2')" class="col-md-3">2</button><br>
+        <button (click)="appendToDisplay('1')" class="col-md-4">1</button>
+        <button (click)="appendToDisplay('.')" class="col-md-4">.</button>
+        <button (click)="appendToDisplay('0')" class="col-md-4">0</button>
+        
+    </div>
+</div>

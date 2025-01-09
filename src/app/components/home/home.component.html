@@ -152,55 +152,8 @@
         </div>
         <div class="col-md-3 bg-custom-3">
           <div class="d-flex flex-column align-items-center">
-            <div class="my-3">Select Friend</div>
-
-            <form>
-              <mat-form-field appearance="outline">
-                <mat-chip-grid #chipGrid aria-label="Friend Selection">
-                  @for (friend of friend(); track $index) {
-                  <mat-chip-row (removed)="remove(friend)">
-                    {{friend.friendName}}
-                    <button matChipRemove [attr.aria-label]="'remove ' + friend">
-                      <mat-icon>cancel</mat-icon>
-                    </button>
-                  </mat-chip-row>
-                  }
-                </mat-chip-grid>
-                <input name="currentFriend" placeholder="Add Friend..." #friendInput [(ngModel)]="currentFriend"
-                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  (matChipInputTokenEnd)="add($event)" />
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                  @for (friend of filteredFriends(); track friend) {
-                  <mat-option [value]="friend">{{friend.friendName}}</mat-option>
-                  }
-                </mat-autocomplete>
-              </mat-form-field>
-            </form>
-
-            <div class="my-3">Enter Description</div>
-            <mat-form-field appearance="outline">
-              <input matInput type="text" placeholder="Enter Description" />
-            </mat-form-field>
-
-            <div class="my-3">Enter Transaction Amount</div>
-            <mat-form-field appearance="outline">
-              <input
-                matInput
-                type="text"
-                placeholder="Enter Transaction Amount"
-              />
-            </mat-form-field>
-
-            <div class="my-3">Select Split Type</div>
-            <mat-form-field appearance="outline">
-              <mat-select>
-                @for (type of splitType; track type) {
-                <mat-option [value]="type.value">{{
-                  type.viewValue
-                }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
+           
+            <app-calculalor></app-calculalor>
 
             <div class="mt-3">
               <button mat-flat-button color="primary" (click)="addExpense()">
